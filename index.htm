@@ -1,0 +1,109 @@
+<html>
+    
+    <head>
+        <title>IRC Imposter Names</title>
+        <style type="text/css">
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                max-width: 600px;
+                margin: 20px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>IRC Imposters on FreeNode</h1>
+        <p>IMPORTANT TIP: Make sure your Nickserv "Nick Guard" is set to strict.
+            It will prevent people impersonating you even for a few minutes.
+        </p>
+        
+        <p>
+            Recently there has been an invasion of nick impersonators, for example 
+                <strong>cob1ee</strong> impersonating coblee (notice the number one 
+                instead of an L). <br/><br/>
+            This page will show you different ways your nick
+                could be impersonated. <br/><br/>
+            On Freenode you can simply change your nick
+                to one of them, and type <strong>/msg nickserv group</strong> while
+                logged into your primary nickname, and this will prevent the impersonators
+                from using them (assuming you have Nick Guard turned on).
+        </p>
+        <p>This page was made by <a href="https://github.com/someguy123" target="_BLANK">Someguy123</a>
+            and is released open source under the MIT Licence <a href="https://github.com/someguy123/irc-impersonators">on GitHub</a>
+        </p>
+        <p>Enter your nick below to see how you can be impersonated on Freenode:</p>
+        <div>
+            <input type="text" id="username" placeholder="Your Freenode Nick" />
+            <button onClick="genNicks()">Generate Nicknames</button>
+        </div>
+        <hr/>
+        <div id="names">
+        </div>
+        <script type="text/javascript">
+            // Characters that can be used once before or after the nick
+            var singles = ['`', '[', ']', '\\', '^', '_'];
+            // Characters that may appear more than once
+            var dupes = ['`', '\\', '_'];
+            // Numbers can only appear after the nick, not before
+            var numbers = [0,1,2,3,4,5,6,7,8,9];
+            // Characters that may look similar in some fonts
+            var lookalikes = {
+                '0': 'o',
+                'o': '0',
+                'O': '0',
+                'l': 'I',
+                'I': 'l',
+                'i': 'l',
+                'l': '1',
+                '1': 'l'
+            }
+            var name_list = document.getElementById('names');
+            function genNicks() {
+                // clear previous nicks
+                name_list.innerHTML = '';
+                var username = document.getElementById('username').value;
+                
+                // validation
+                if(username == '') {
+                    alert('Please fill in the username!');
+                    return;
+                }
+                
+                name_list.innerHTML += "<strong>Look-a-like characters</strong><br/>";
+                // Look-a-likes
+                for(var k in username) {
+                    var char = username[k];
+                    if(char in lookalikes) {
+                        var replaced = username.replace(char, lookalikes[char]);
+                        name_list.innerHTML += "<p>" + replaced + "</p>";
+                    }
+                }
+                
+                // After singles (most common)
+                name_list.innerHTML += "<strong>Single appended characters</strong><br/>";                
+                for(var v in singles) {
+                    name_list.innerHTML += "<p>" + username + singles[v] + "</p>";  
+                }
+                
+                // After dupes (somewhat common)
+                name_list.innerHTML += "<strong>Multiple appended characters</strong><br/>";                
+                for(var v in dupes) {
+                    name_list.innerHTML += "<p>" + username + dupes[v] + dupes[v] + "</p>";  
+                    name_list.innerHTML += "<p>" + username + dupes[v] + dupes[v] + dupes[v] + "</p>";  
+                }
+                
+                // After numbers (somewhat common)
+                name_list.innerHTML += "<strong>Single appended numbers</strong><br/>";
+                for(var i in numbers) {
+                    name_list.innerHTML += "<p>"  + username + numbers[i] + "</p>";                      
+                }
+                name_list.innerHTML += "<strong>Single prepended characters</strong><br/>";
+                
+                // Before singles (not as common)
+                for(var v in singles) {
+                    name_list.innerHTML += "<p>" + singles[v] + username + "</p>";                      
+                }
+                
+            }
+        </script>
+    </body>
+</html>
